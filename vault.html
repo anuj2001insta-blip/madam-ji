@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Secret Vault 🔒 // Developer Note: Change the password in the script below!</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&family=Dancing+Script:wght@600&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --rose: #ff3b5c;
+      --rose-light: #ff6f8a;
+      --gold: #ffcf77;
+      --purple: #8b5cf6;
+      --deep: #050008;
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #fff5f7;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Cosmos Background */
+    .cosmos {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .cosmos::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 60%);
+    }
+
+    /* ---- BACK BUTTON ---- */
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border-radius: 50px;
+      padding: 10px 20px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .back-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      transform: translateX(-3px);
+    }
+
+    /* ---- LOCK SCREEN OVERLAY ---- */
+    .lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(5, 0, 8, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .lock-screen.unlocked {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .lock-icon {
+      font-size: 4rem;
+      animation: float 3s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .lock-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #ef4444;
+      margin-bottom: 10px;
+    }
+
+    .lock-sub {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 30px;
+      font-style: italic;
+    }
+
+    .pwd-input-wrap {
+      position: relative;
+      width: 280px;
+    }
+
+    .pwd-input {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: white;
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 2px;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .pwd-input:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .pwd-input.error {
+      border-color: #ff3b5c;
+      animation: shake 0.4s;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20%,
+      60% {
+        transform: translateX(-5px);
+      }
+
+      40%,
+      80% {
+        transform: translateX(5px);
+      }
+    }
+
+    .unlock-btn {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #ef4444, #991b1b);
+      border: none;
+      border-radius: 50px;
+      padding: 14px 40px;
+      color: white;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .unlock-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(239, 68, 68, 0.5);
+    }
+
+    .lock-hint {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+      text-align: center;
+      max-width: 80%;
+      line-height: 1.4;
+      transition: color 0.3s ease;
+    }
+
+    /* ---- VAULT CONTENT ---- */
+    .vault-content {
+      position: relative;
+      z-index: 10;
+      padding: 100px 20px 60px;
+      max-width: 1000px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s ease 0.5s;
+      display: none;
+    }
+
+    .lock-screen.unlocked~.vault-content {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .vault-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .vault-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      color: #ef4444;
+      margin-bottom: 10px;
+    }
+
+    .vault-header p {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+
+    .masonry-grid {
+      column-count: 3;
+      column-gap: 16px;
+      width: 100%;
+    }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+    }
+
+    .masonry-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s;
+    }
+
+    .masonry-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .masonry-item::after {
+      content: 'Exclusive 🤫';
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #dfc5ff;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* ---- LIGHTBOX ---- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      border-radius: 16px;
+      box-shadow: 0 0 80px rgba(239, 68, 68, 0.2);
+      object-fit: contain;
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .lb-close:hover {
+      transform: rotate(90deg) scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+      .masonry-grid {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .masonry-grid {
+        column-count: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="cosmos"></div>
+  <a href="index.html" class="back-btn"><span class="arrow">←</span><span>Back</span></a>
+
+  <!-- LOCK SCREEN -->
+  <div class="lock-screen" id="lock-screen">
+    <div class="lock-icon">🔒</div>
+    <h1 class="lock-title">The Secret Vault</h1>
+    <p class="lock-sub">Enter the secret password to view our exclusive memories...</p>
+
+    <div class="pwd-input-wrap">
+      <input type="password" id="pwd-input" class="pwd-input" placeholder="Password" />
+    </div>
+    <button class="unlock-btn" id="unlock-btn">Unlock Vault</button>
+    <p class="lock-hint" id="lock-hint">Hint: First date for birthday dono ka 🤫</p>
+  </div>
+
+  <!-- VAULT CONTENT -->
+  <div class="vault-content">
+    <div class="vault-header">
+      <h1>Our Secret Vault</h1>
+      <p>The weird, the funny, and the memories just for us.</p>
+    </div>
+
+    <div class="masonry-grid">
+      <div class="masonry-item"><img src="vault/IMG_20260112_063126.jpg" alt="Secret 1" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073553.jpg" alt="Secret 2" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_063144.jpg" alt="Secret 3" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_063146.jpg" alt="Secret 4" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_065654.jpg" alt="Secret 5" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_065701.jpg" alt="Secret 6" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073753.jpg" alt="Secret 7" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_065715.jpg" alt="Secret 8" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260113_075441.jpg" alt="Secret 9" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073553.jpg" alt="Secret 10" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_190515.jpg" alt="Secret 11" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073718.jpg" alt="Secret 12" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073725.jpg" alt="Secret 13" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073730.jpg" alt="Secret 14" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073735.jpg" alt="Secret 15" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260113_073617.jpg" alt="Secret 16" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_073753.jpg" alt="Secret 17" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074440.jpg" alt="Secret 18" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_195208.jpg" alt="Secret 19" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074448.jpg" alt="Secret 20" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074453.jpg" alt="Secret 21" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074456.jpg" alt="Secret 22" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074504.jpg" alt="Secret 23" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074507.jpg" alt="Secret 24" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074511.jpg" alt="Secret 25" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074513.jpg" alt="Secret 26" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074514.jpg" alt="Secret 27" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074516.jpg" alt="Secret 28" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074518.jpg" alt="Secret 29" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074522.jpg" alt="Secret 30" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074531.jpg" alt="Secret 31" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074538.jpg" alt="Secret 32" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074546.jpg" alt="Secret 33" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074549.jpg" alt="Secret 34" loading="lazy"></div>
+      <div class="masonry-item"><img src="vault/IMG_20260112_074558.jpg" alt="Secret 35" loading="lazy"></div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <span class="lb-close" id="lb-close">✕</span>
+    <img id="lb-img" src="" alt="" />
+    <!-- BG AUDIO -->
+    <audio id="bg-audio" loop preload="auto" controlsList="nodownload">
+      <source src="audio/vault_bg_v2.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    /* --- BG AUDIO LOGIC --- */
+    const bgAudio = document.getElementById('bg-audio');
+    let audioStarted = false;
+
+    // --- NEW: State Persistence Logic ---
+    const SCROLL_KEY = 'vault_scroll_pos';
+    const AUDIO_KEY = 'vault_audio_pos';
+
+    function saveState() {
+      localStorage.setItem(SCROLL_KEY, window.scrollY);
+    }
+
+    function restoreState() {
+      // 1. Restore Scroll
+      const savedScroll = localStorage.getItem(SCROLL_KEY);
+      if (savedScroll !== null) {
+        window.scrollTo(0, parseInt(savedScroll));
+      }
+    }
+
+    // Save state on scroll (throttled) and before leaving
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(saveState, 500);
+    }, { passive: true });
+
+    window.addEventListener('beforeunload', saveState);
+    window.addEventListener('pagehide', saveState);
+
+
+
+    function startBgAudio() {
+      if (audioStarted) return;
+      
+      // Restore on first attempt to play
+      restoreState();
+
+      audioStarted = true;
+      bgAudio.volume = 1.0;
+      bgAudio.play().then(() => {
+        console.log("Audio playing at 100%");
+      }).catch(e => {
+        audioStarted = false; // Reset to allow fallback via click
+        console.warn("Autoplay blocked");
+      });
+    }
+
+    // Attempt autoplay immediately on load
+    window.addEventListener('load', () => {
+      restoreState();
+      startBgAudio();
+    });
+
+    // Seamless triggers as soon as there is ANY activity
+    const vTriggers = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
+    vTriggers.forEach(vt => {
+      window.addEventListener(vt, startBgAudio, { once: true, passive: true });
+    });
+
+    /* --- PASSWORD LOGIC --- */
+    const correctPassword = "1203";
+    let failedAttempts = 0;
+
+    const lockScreen = document.getElementById('lock-screen');
+    const pwdInput = document.getElementById('pwd-input');
+    const unlockBtn = document.getElementById('unlock-btn');
+    const lockHint = document.getElementById('lock-hint');
+
+    function attemptUnlock() {
+      const val = pwdInput.value.trim().toLowerCase();
+      if (val === correctPassword.toLowerCase()) {
+        lockScreen.classList.add('unlocked');
+      } else {
+        failedAttempts++;
+        pwdInput.classList.add('error');
+        setTimeout(() => pwdInput.classList.remove('error'), 400);
+        pwdInput.value = '';
+
+        if (failedAttempts >= 3) {
+          pwdInput.placeholder = "Try: " + correctPassword;
+          lockHint.innerText = "Don't worry, the password is: " + correctPassword + " 😊";
+          lockHint.style.color = "#ffcf77";
+        }
+      }
+    }
+
+    unlockBtn.addEventListener('click', attemptUnlock);
+    pwdInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptUnlock(); });
+
+    /* --- LIGHTBOX LOGIC --- */
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+
+    document.querySelectorAll('.masonry-item img').forEach(img => {
+      img.parentElement.addEventListener('click', () => {
+        lbImg.src = img.src;
+        lb.classList.add('open');
+      });
+    });
+
+    document.getElementById('lb-close').addEventListener('click', () => { lb.classList.remove('open'); lbImg.src = ''; });
+    lb.addEventListener('click', e => { if (e.target === lb) { lb.classList.remove('open'); lbImg.src = ''; } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { lb.classList.remove('open'); lbImg.src = ''; } });
+  </script>
+
+</body>
+
+</html>

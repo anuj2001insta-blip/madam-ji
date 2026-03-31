@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Letter of Apology 📜</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --parchment: #f5ead6;
+      --parchment-dk: #e8d5b5;
+      --ink: #2c1a0e;
+      --ink-faded: #5a3d2b;
+      --rose-dk: #8b2635;
+      --sepia: #704214;
+      --gold-old: #b8902a;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at center, #1a0a05 0%, #0d0005 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 60px 20px 80px;
+      position: relative;
+      overflow-x: hidden;
+      font-family: 'IM Fell English', Georgia, serif;
+    }
+
+    /* Floating dust particles */
+    #dust-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Back button */
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: rgba(245, 234, 214, 0.1);
+      border: 1px solid rgba(184, 144, 42, 0.4);
+      border-radius: 50px;
+      color: #d4a855;
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+    }
+
+    .back-btn:hover {
+      background: rgba(184, 144, 42, 0.2);
+      border-color: rgba(184, 144, 42, 0.8);
+      color: #f0c060;
+      transform: translateX(-3px);
+    }
+
+    /* === LETTER WRAPPER === */
+    .letter-scene {
+      position: relative;
+      z-index: 10;
+      max-width: 720px;
+      width: 100%;
+      animation: floatIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(40px) rotate(-1.5deg);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) rotate(-0.5deg);
+      }
+    }
+
+    /* Tattered edges overlay */
+    .letter-scene::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeDisplacementMap in='SourceGraphic' xChannelSelector='R' yChannelSelector='G' scale='6'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)'/%3E%3C/svg%3E");
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.08;
+    }
+
+    .letter-paper {
+      background:
+        repeating-linear-gradient(0deg,
+          transparent,
+          transparent 27px,
+          rgba(112, 66, 20, 0.08) 27px,
+          rgba(112, 66, 20, 0.08) 28px),
+        linear-gradient(160deg, #f7eed8 0%, #efddb5 35%, #e8d0a3 65%, #f2e6c8 100%);
+      border-radius: 4px;
+      padding: 60px 55px 70px;
+      box-shadow:
+        0 0 0 1px rgba(112, 66, 20, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.5),
+        0 15px 40px rgba(0, 0, 0, 0.6),
+        inset 0 0 80px rgba(112, 66, 20, 0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Aged stain marks */
+    .letter-paper::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(139, 90, 43, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .letter-paper::after {
+      content: '';
+      position: absolute;
+      bottom: 40px;
+      right: -30px;
+      width: 260px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(139, 90, 43, 0.09) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Corner fold */
+    .corner-fold {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(225deg, #d4b87e 50%, #c9a85c 50%);
+      clip-path: polygon(100% 0, 100% 100%, 0 0);
+      box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Rose watermark */
+    .watermark-rose {
+      position: absolute;
+      bottom: 60px;
+      right: 40px;
+      font-size: 7rem;
+      opacity: 0.05;
+      pointer-events: none;
+      transform: rotate(-20deg);
+      user-select: none;
+    }
+
+    /* === HEADER === */
+    .letter-header {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(112, 66, 20, 0.25);
+      position: relative;
+    }
+
+    .letter-header .flourish {
+      font-size: 1.4rem;
+      color: var(--rose-dk);
+      opacity: 0.5;
+      letter-spacing: 18px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .letter-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--rose-dk);
+      letter-spacing: 1px;
+      line-height: 1.2;
+      text-shadow: 1px 2px 4px rgba(139, 38, 53, 0.2);
+    }
+
+    .letter-subtitle {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      color: var(--ink-faded);
+      font-size: 0.9rem;
+      margin-top: 8px;
+      letter-spacing: 2px;
+    }
+
+    .letter-date {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.82rem;
+      color: var(--sepia);
+      text-align: right;
+      margin-bottom: 28px;
+      opacity: 0.75;
+    }
+
+    .salutation {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.7rem;
+      color: var(--ink);
+      margin-bottom: 24px;
+      line-height: 1.3;
+    }
+
+    /* === BODY PARAGRAPHS === */
+    .letter-body p {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.95;
+      color: var(--ink);
+      margin-bottom: 22px;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    .letter-body p:first-child::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.8rem;
+      float: left;
+      line-height: 0.75;
+      padding-right: 8px;
+      padding-top: 8px;
+      color: var(--rose-dk);
+      font-weight: 400;
+    }
+
+    .letter-body em {
+      color: var(--rose-dk);
+      font-style: italic;
+    }
+
+    .letter-body strong {
+      color: var(--sepia);
+      font-weight: 700;
+    }
+
+    /* Paragraph divider ornament */
+    .ornament {
+      text-align: center;
+      color: var(--rose-dk);
+      font-size: 1rem;
+      opacity: 0.35;
+      letter-spacing: 12px;
+      margin: 28px 0;
+      display: block;
+    }
+
+    /* === WAX SEAL SECTION === */
+    .seal-section {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(112, 66, 20, 0.2);
+    }
+
+    .closing {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--ink-faded);
+      margin-bottom: 8px;
+    }
+
+    .signature {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.6rem;
+      color: var(--rose-dk);
+      line-height: 1;
+      margin-bottom: 36px;
+      text-shadow: 1px 2px 6px rgba(139, 38, 53, 0.25);
+    }
+
+    .wax-seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, #c0392b, #7b0d1e);
+      box-shadow:
+        0 6px 20px rgba(139, 38, 53, 0.6),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+      font-size: 2.4rem;
+      position: relative;
+      cursor: default;
+      transition: transform 0.3s ease;
+      animation: sealPulse 3s ease-in-out infinite;
+    }
+
+    .wax-seal:hover {
+      transform: scale(1.06);
+    }
+
+    @keyframes sealPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 6px 20px rgba(139, 38, 53, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.15);
+      }
+
+      50% {
+        box-shadow: 0 6px 40px rgba(139, 38, 53, 0.9), inset 0 2px 4px rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    /* === BOTTOM CTA to go back === */
+    .back-home-wrap {
+      margin-top: 50px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .back-home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 30px;
+      background: transparent;
+      border: 1px solid rgba(184, 144, 42, 0.4);
+      border-radius: 50px;
+      color: #d4a855;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: all 0.35s;
+    }
+
+    .back-home-btn:hover {
+      background: rgba(184, 144, 42, 0.15);
+      border-color: #d4a855;
+      color: #f0c060;
+      transform: translateY(-2px);
+    }
+
+
+
+    /* Scroll reveal paragraphs */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 560px) {
+      .letter-paper {
+        padding: 40px 28px 55px;
+      }
+
+      .letter-body p {
+        font-size: 0.97rem;
+      }
+    }
+
+    /* Vintage Photo / Polaroid */
+    .vintage-photo {
+      width: 200px;
+      padding: 10px 10px 30px;
+      background: #eee;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transform: rotate(-3deg);
+      margin: 20px auto;
+      transition: transform 0.3s;
+      position: relative;
+    }
+
+    .vintage-photo:hover {
+      transform: rotate(0deg) scale(1.05);
+    }
+
+    .vintage-photo img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: sepia(0.3) contrast(1.1);
+    }
+
+    .vintage-photo::after {
+      content: 'A sweet memory...';
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .side-by-side {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .side-by-side .vintage-photo {
+      flex: 0 0 220px;
+      margin: 0;
+    }
+
+    .side-by-side p {
+      margin-bottom: 0 !important;
+    }
+
+    @media (max-width: 550px) {
+      .letter-paper {
+        padding: 30px 20px 50px;
+      }
+
+      .side-by-side {
+        gap: 15px;
+        align-items: flex-start;
+      }
+
+      .side-by-side .vintage-photo {
+        width: 120px;
+        flex: 0 0 120px;
+        margin: 0;
+      }
+
+      .side-by-side p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="dust-canvas"></canvas>
+
+  <!-- Back btn -->
+  <a href="index.html" class="back-btn">← Back</a>
+
+
+
+  <!-- The Letter -->
+  <div class="letter-scene">
+    <div class="letter-paper">
+
+      <div class="corner-fold"></div>
+      <div class="watermark-rose" aria-hidden="true">🥀</div>
+
+      <!-- Header -->
+      <div class="letter-header">
+        <span class="flourish">· · · ✦ · · ·</span>
+        <h1 class="letter-title">A Letter of Apology</h1>
+        <p class="letter-subtitle">Written with a heavy heart & trembling hands</p>
+      </div>
+
+      <p class="letter-date reveal">KIET, 27 March 2026</p>
+
+      <p class="salutation reveal">My dearest Madam ji,</p>
+
+      <div class="letter-body">
+
+        <p class="reveal">
+          I sit here tonight, pen in hand (naam ka pen hai heheheh), staring at a blank page — knowing that no words I
+          write will ever be quite enough. And yet, I must try. Because you deserve more than silence,
+          more than excuses, and <em>infinitely more</em> than the hurt I have caused you.
+        </p>
+
+        <span class="ornament reveal">⁂</span>
+
+        <div class="side-by-side reveal">
+          <div class="vintage-photo">
+            <img src="videocalls/Screenshot_2025-09-29-00-45-09-102_com.whatsapp.jpg" alt="Memory">
+          </div>
+          <p>I am sorry for apne baatien pe nhi rahe payaaa har baar dusari ladkiyon se baat krta rha tumne mujhe lakh
+            baar mana kiya fir bhi <em>over and over</em>,
+            again same harkat karta tha tumko hurt karta thaa tumko har time hurt karta tha pata nhi kitne baare tumne
+            mere
+            wajah se roya hogaaa ik .
+          </p>
+        </div>
+
+        <p class="reveal">
+          There are things I did — and things I failed to do — that main vo <strong>ladka nhi ban paya</strong>
+          jisko tumne starting main pyar kiya tha. aapka choclate boy nhi ban paya . ha manta hu ki main bhout bhoutttt
+          saari galtiya kiya hai
+          I should have chosen your peace over my ego. But I didn't.
+          aur har din main ego main rehta tha
+        </p>
+
+        <span class="ornament reveal">· · ✦ · ·</span>
+
+        <p class="reveal">
+          You never asked for anything complicated from me. You only ever asked to feel seen,
+          to feel safe, to feel like you matter. And you do — <em>more than anyone, more than everything.</em>
+          Yet in the moments that mattered most, I made you feel otherwise.
+          That is something I will not forgive myself for easily, nor should I.
+        </p>
+
+        <span class="ornament reveal">⁂</span>
+
+        <p class="reveal">
+          If I could go back, main sab se phle vo sab thik karta jo main galat kiya hu I would have said
+          <em>"I'm sorry"</em>
+        </p>
+
+        <p class="reveal">
+          So here it is, written in ink so it cannot be taken back: I am sorry,
+          with every part of me. I am sorry for the tum ko hurt kiyaaaa. I am sorry for the carelessness.
+          I am sorry for the times you reached for me aur main kise aur se baat krta rha and I was not fully there.
+          You are not too much. You have never been too much.
+          <em>I was simply not enough — and I am working to change that.</em>
+        </p>
+
+        <div class="side-by-side reveal" style="flex-direction: row-reverse;">
+          <div class="vintage-photo" style="transform: rotate(2deg); margin: 0; width: 220px;">
+            <img src="videocalls/Screenshot_2025-09-29-00-43-18-643_com.whatsapp.jpg" alt="Memory Right">
+          </div>
+          <p>
+            mujhe maaf kr dena . I ask only that you believe this:
+            <strong>you have always been worth every apology, every effort, every bit of love
+              that exists in me.</strong> And I am not done trying to show you that.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Closing & Seal -->
+      <div class="seal-section reveal">
+        <p class="closing">With all the love I carry,</p>
+        <p class="signature">Yours, always 🖊️</p>
+        <div class="wax-seal" title="Sealed with love">❤️</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BG music (same as letter.html) -->
+  <audio id="bg-music" loop preload="auto" controlsList="nodownload">
+    <source src="audio/letter_bg.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    /* ========= DUST PARTICLES ========= */
+    const canvas = document.getElementById('dust-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Mote {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H + H;
+        this.r = Math.random() * 1.5 + 0.3;
+        this.speed = Math.random() * 0.3 + 0.1;
+        this.drift = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.35 + 0.05;
+        this.life = 1;
+      }
+      update() {
+        this.y -= this.speed;
+        this.x += this.drift;
+        this.life -= 0.0015;
+        if (this.y < -20 || this.life <= 0) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity * this.life;
+        ctx.fillStyle = '#d4a855';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < 55; i++) {
+      const m = new Mote();
+      m.y = Math.random() * H; // scatter initially
+      particles.push(m);
+    }
+
+    function animateDust() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateDust);
+    }
+    animateDust();
+
+    /* ========= SCROLL REVEAL ========= */
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+
+    /* ========= BG MUSIC ========= */
+    const bgMusic = document.getElementById('bg-music');
+    let musicStarted = false;
+
+    // --- NEW: State Persistence Logic ---
+    const SCROLL_KEY = 'sorry_scroll_pos';
+    const AUDIO_KEY = 'sorry_audio_pos';
+
+    function saveState() {
+      localStorage.setItem(SCROLL_KEY, window.scrollY);
+    }
+
+    function restoreState() {
+      // 1. Restore Scroll
+      const savedScroll = localStorage.getItem(SCROLL_KEY);
+      if (savedScroll !== null) {
+        window.scrollTo(0, parseInt(savedScroll));
+      }
+    }
+
+    // Save state on scroll (throttled) and before leaving
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(saveState, 500);
+    }, { passive: true });
+
+    window.addEventListener('beforeunload', saveState);
+    window.addEventListener('pagehide', saveState);
+
+
+
+    function startMusic() {
+      if (musicStarted) return;
+      restoreState();
+      musicStarted = true;
+      bgMusic.volume = 0.3; // Immediate target volume, no fade
+      bgMusic.play().catch(() => { musicStarted = false; });
+    }
+
+    window.addEventListener('load', () => {
+      restoreState();
+      startMusic();
+    });
+
+    const sTriggers = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
+    sTriggers.forEach(st => {
+      window.addEventListener(st, startMusic, { once: true, passive: true });
+    });
+  </script>
+
+</body>
+
+</html>

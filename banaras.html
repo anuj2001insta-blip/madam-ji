@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banaras Wali Yaadein 🕌💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&family=Dancing+Script:wght@600&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --rose: #ff3b5c;
+      --rose-light: #ff6f8a;
+      --gold: #ffcf77;
+      --purple: #8b5cf6;
+      --deep: #0d0010;
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #fff5f7;
+      --muted: rgba(255, 245, 247, 0.55);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--deep);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--rose);
+      border-radius: 10px;
+    }
+
+    /* ---- AMBIENT BG ---- */
+    .cosmos {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .cosmos::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 30%, rgba(255, 207, 119, 0.15) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 70%, rgba(255, 59, 92, 0.14) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 90%, rgba(139, 92, 246, 0.12) 0%, transparent 50%);
+    }
+
+    /* ---- PARTICLES ---- */
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ---- PROGRESS BAR ---- */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      z-index: 999;
+      background: linear-gradient(90deg, var(--gold), var(--rose), var(--purple));
+      width: 0%;
+    }
+
+    /* ---- BACK BUTTON ---- */
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border-radius: 50px;
+      padding: 10px 20px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 59, 92, 0.15);
+      border-color: var(--rose);
+      transform: translateX(-3px);
+    }
+
+    .back-btn .arrow {
+      font-size: 1.1rem;
+    }
+
+    /* ---- HERO ---- */
+    .page-hero {
+      position: relative;
+      z-index: 10;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 20px 60px;
+      gap: 0;
+    }
+
+    .city-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      animation: float-icon 3s ease-in-out infinite;
+    }
+
+    @keyframes float-icon {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .page-tag {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #fff 0%, var(--gold) 40%, var(--rose-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-subtitle {
+      font-weight: 300;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--muted);
+      margin-top: 14px;
+      max-width: 480px;
+    }
+
+    .page-dates {
+      margin-top: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--glass);
+      border: 1px solid rgba(255, 207, 119, 0.3);
+      border-radius: 50px;
+      padding: 8px 22px;
+      backdrop-filter: blur(12px);
+      font-family: 'Dancing Script', cursive;
+      font-size: 1rem;
+      color: var(--gold);
+      box-shadow: 0 0 20px rgba(255, 207, 119, 0.1);
+    }
+
+    /* ---- THREAD GALLERY SECTION ---- */
+    .thread-gallery {
+      position: relative;
+      z-index: 10;
+      padding: 40px 0 80px;
+    }
+
+    .thread-svg-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+
+    .thread-path {
+      fill: none;
+      stroke: url(#bThreadGrad);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      filter: url(#bThreadGlow);
+      stroke-dasharray: 10000;
+      stroke-dashoffset: 10000;
+    }
+
+    /* ---- PHOTO NODES REVEAL SYSTEM ---- */
+    .photo-node {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 40px;
+      gap: 0;
+      min-height: 360px;
+      overflow: hidden;
+      /* Prevent horizontal scrollbars during animation */
+    }
+
+    .ph-left {
+      flex-direction: row;
+    }
+
+    .ph-right {
+      flex-direction: row-reverse;
+    }
+
+    /* Initial hidden states */
+    .pol-card {
+      opacity: 0;
+      transform: translateX(-40px) rotate(-3deg);
+      will-change: transform, opacity;
+      transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .ph-right .pol-card {
+      transform: translateX(40px) rotate(3deg);
+    }
+
+    .caption-card {
+      opacity: 0;
+      transform: translateX(40px);
+      will-change: transform, opacity;
+      transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s;
+    }
+
+    .ph-right .caption-card {
+      transform: translateX(-40px);
+    }
+
+    /* Visible states when parent .photo-node is inview */
+    .photo-node.visible .pol-card {
+      opacity: 1;
+      transform: translateX(0) rotate(-3deg);
+    }
+
+    .ph-right.photo-node.visible .pol-card {
+      transform: translateX(0) rotate(3deg);
+    }
+
+    .photo-node.visible .caption-card {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Polaroid photo styling */
+    .pol-card {
+      flex: 0 0 auto;
+      width: clamp(200px, 32vw, 300px);
+      aspect-ratio: 1;
+      position: relative;
+      margin: 0 35px;
+    }
+
+    .pol-frame {
+      width: 100%;
+      height: 100%;
+      background: #1a0020;
+      border-radius: 16px;
+      padding: 10px 10px 36px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 30px rgba(255, 207, 119, 0.12);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pol-frame img {
+      width: 100%;
+      height: calc(100% - 26px);
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .pol-label {
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+
+    .pol-dot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px 4px rgba(255, 207, 119, 0.6), 0 0 20px 6px rgba(255, 207, 119, 0.3);
+      z-index: 5;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .ph-left .pol-dot {
+      right: -6px;
+    }
+
+    .ph-right .pol-dot {
+      left: -6px;
+    }
+
+    /* Caption card */
+    .caption-card {
+      flex: 0 1 auto;
+      max-width: clamp(260px, 40vw, 450px);
+      background: var(--glass);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      backdrop-filter: blur(12px);
+      padding: 35px 30px;
+      margin: 0 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      position: relative;
+    }
+
+    .caption-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .cap-num {
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.82rem;
+      color: var(--gold);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .caption-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.65rem);
+      line-height: 1.25;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .caption-card p {
+      font-size: clamp(0.82rem, 1.5vw, 0.95rem);
+      line-height: 1.85;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .hl {
+      -webkit-text-fill-color: initial;
+      color: var(--rose-light);
+      font-style: italic;
+    }
+
+    .cap-icon {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* ---- MINI GRID (extra photos) ---- */
+    .extra-grid-section {
+      position: relative;
+      z-index: 10;
+      padding: 20px 40px 60px;
+      text-align: center;
+    }
+
+    .extra-grid-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-bottom: 30px;
+    }
+
+    .extra-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .extra-thumb {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .extra-thumb.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .extra-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .extra-thumb:hover img {
+      transform: scale(1.08);
+    }
+
+    .extra-thumb::after {
+      content: '🔍';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background: rgba(255, 59, 92, 0.25);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .extra-thumb:hover::after {
+      opacity: 1;
+    }
+
+    /* ---- LIGHTBOX ---- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      border-radius: 16px;
+      box-shadow: 0 0 80px rgba(255, 207, 119, 0.2);
+      object-fit: contain;
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      line-height: 1;
+      transition: transform 0.2s;
+    }
+
+    .lb-close:hover {
+      transform: rotate(90deg) scale(1.2);
+    }
+
+    .lb-prev,
+    .lb-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .lb-prev {
+      left: 16px;
+    }
+
+    .lb-next {
+      right: 16px;
+    }
+
+    .lb-prev:hover,
+    .lb-next:hover {
+      background: rgba(255, 59, 92, 0.4);
+    }
+
+    /* ---- BOTTOM NOTE ---- */
+    .bottom-note {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 20px 80px;
+    }
+
+    .bottom-note .note-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      color: var(--rose-light);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .bottom-note .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      background: linear-gradient(135deg, rgba(255, 59, 92, 0.15), rgba(255, 207, 119, 0.1));
+      border: 1px solid rgba(255, 59, 92, 0.3);
+      border-radius: 50px;
+      padding: 12px 28px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      backdrop-filter: blur(12px);
+    }
+
+    .bottom-note .back-home:hover {
+      background: rgba(255, 59, 92, 0.25);
+      border-color: var(--rose);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 59, 92, 0.2);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 700px) {
+      .photo-node {
+        flex-direction: inherit !important;
+        padding: 20px 12px;
+        gap: 14px;
+        min-height: auto;
+        align-items: flex-start;
+      }
+
+      .pol-card {
+        width: 150px !important;
+        flex: 0 0 150px;
+        margin: 0;
+      }
+
+      .caption-card {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        margin: 0;
+        padding: 10px 8px;
+        overflow: hidden;
+        word-break: break-word;
+      }
+
+      .caption-card h3 {
+        font-size: 1.1rem;
+      }
+
+      .caption-card p {
+        font-size: 0.8rem;
+        line-height: 1.5;
+      }
+
+      /* Show center of photo so both people are visible */
+      .pol-frame img {
+        object-position: center center;
+      }
+
+      .pol-dot {
+        display: none;
+      }
+
+      .extra-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .extra-grid-section {
+        padding: 20px 16px 40px;
+      }
+
+      .back-btn {
+        top: 12px;
+        left: 12px;
+        padding: 8px 14px;
+        font-size: 0.75rem;
+      }
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cosmos"></div>
+  <canvas id="particles-canvas"></canvas>
+  <div id="progress-bar"></div>
+
+  <!-- BACK BUTTON -->
+  <a href="index.html" class="back-btn">
+    <span class="arrow">←</span>
+    <span>Back</span>
+  </a>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <span class="lb-close" id="lb-close">✕</span>
+    <button class="lb-prev" id="lb-prev">‹</button>
+    <img id="lb-img" src="" alt="" />
+    <button class="lb-next" id="lb-next">›</button>
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <div class="page-hero">
+    <div class="city-icon">🕌</div>
+    <p class="page-tag">A Chapter Written in the Holy City</p>
+    <h1 class="page-title">Banaras Wali Yaadein</h1>
+    <p class="page-subtitle">The ghats, the galis, the chai — and you. Every corner of Kashi holds a memory of us.</p>
+    <div class="page-dates">
+      <span>🌅</span>
+      <span>January 2026</span>
+      <span>🌅</span>
+    </div>
+  </div>
+
+  <!-- ===================== THREAD GALLERY ===================== -->
+  <div class="thread-gallery" id="thread-gallery">
+
+    <svg class="thread-svg-wrap" id="b-thread-svg" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bThreadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffcf77" stop-opacity="0.9" />
+          <stop offset="33%" stop-color="#ff3b5c" stop-opacity="0.9" />
+          <stop offset="66%" stop-color="#8b5cf6" stop-opacity="0.9" />
+          <stop offset="100%" stop-color="#ffcf77" stop-opacity="0.9" />
+        </linearGradient>
+        <filter id="bThreadGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <path class="thread-path" id="b-thread-path" d="" />
+    </svg>
+
+    <!-- NODE 1 — Left -->
+    <div class="photo-node ph-left" data-node="0">
+      <div class="pol-card">
+        <div class="pol-frame">
+          <img src="banaras/b1.jpg" alt="Banaras Ghat" loading="lazy" />
+          <span class="pol-label">Ghat Pe Baithke 🌊</span>
+        </div>
+        <div class="pol-dot"></div>
+      </div>
+      <div class="caption-card">
+        <span class="cap-icon">🌅</span>
+        <p class="cap-num">Banaras · Memory 1</p>
+        <h3>Pehli Subah Ganga Ke Saath</h3>
+        <p>Jab bhi Banaras yaad aata hai, sabse pehle woh subah yaad aati hai — <span class="hl">tere saath ghaat pe
+            baitha,</span> Ganga ki lehron ko dekhte hue. Woh moment forever mine hai.</p>
+      </div>
+    </div>
+
+    <!-- NODE 2 — Right -->
+    <div class="photo-node ph-right" data-node="1">
+      <div class="pol-card rt">
+        <div class="pol-frame">
+          <img src="banaras/b2.jpg" alt="Old Lanes of Banaras" loading="lazy" />
+          <span class="pol-label">Kashi Ki Galiyon Mein 🪔</span>
+        </div>
+        <div class="pol-dot"></div>
+      </div>
+      <div class="caption-card">
+        <span class="cap-icon">🪔</span>
+        <p class="cap-num">Banaras · Memory 2</p>
+        <h3>Unhi Tangi Galiyon Mein</h3>
+        <p>Woh tangi galiyan, dono taraf ki dukanen, aur beech mein — <span class="hl">tum.</span> Har mor pe kuch naya
+          tha, par tum sabse khoobsurat thi.</p>
+      </div>
+    </div>
+
+    <!-- NODE 3 — Left -->
+    <div class="photo-node ph-left" data-node="2">
+      <div class="pol-card">
+        <div class="pol-frame">
+          <img src="banaras/b3.jpg" alt="Chai aur Baatein" loading="lazy" />
+          <span class="pol-label">Chai Wali Baatein ☕</span>
+        </div>
+        <div class="pol-dot"></div>
+      </div>
+      <div class="caption-card">
+        <span class="cap-icon">☕</span>
+        <p class="cap-num">Banaras · Memory 3</p>
+        <h3>Kulhad Mein Chai, Dil Mein Tu</h3>
+        <p>Banaras ki woh special chai — <span class="hl">tere haathon mein kulhad</span> aur mere chehere pe muskan.
+          Woh chai itni meethi kaise thi? Tum thi, isliye.</p>
+      </div>
+    </div>
+
+    <!-- NODE 4 — Right -->
+    <div class="photo-node ph-right" data-node="3">
+      <div class="pol-card rt">
+        <div class="pol-frame">
+          <img src="banaras/b4.jpg" alt="Aarti Wali Shaam" loading="lazy" />
+          <span class="pol-label">Ganga Aarti ✨</span>
+        </div>
+        <div class="pol-dot"></div>
+      </div>
+      <div class="caption-card">
+        <span class="cap-icon">✨</span>
+        <p class="cap-num">Banaras · Memory 4</p>
+        <h3>Aarti Ki Roshni Mein</h3>
+        <p>Ganga aarti ka woh nazara — deepon ki roshni, ghanton ki aawaz, aur <span class="hl">teri aankhon mein woh
+            chamak.</span> Wo pal meri zindagi ka sabse khoobsurat pal tha.</p>
+      </div>
+    </div>
+
+    <!-- NODE 5 — Left -->
+    <div class="photo-node ph-left" data-node="4">
+      <div class="pol-card">
+        <div class="pol-frame">
+          <img src="banaras/b5.jpg" alt="January Banaras" loading="lazy" style="transform: rotate(1deg);" />
+          <span class="pol-label">January Ki Sardi 🧣</span>
+        </div>
+        <div class="pol-dot"></div>
+      </div>
+      <div class="caption-card">
+        <span class="cap-icon">🧣</span>
+        <p class="cap-num">Banaras · Best dayyy</p>
+        <h3>12 January 2026 — best day of my lifeeee</h3>
+        <p>Pehli baar Banaras gaye the — aur phir dobara tumhare sath jane ka mann ho rha hai <span class="hl">Tumhari
+            wajah se yeh
+            sheher mera favorite ban gaya.</span></p>
+      </div>
+    </div>
+
+  </div><!-- /thread-gallery -->
+
+  <!-- ===================== VIDEO MOMENT ===================== -->
+  <div class="video-section" style="position: relative; z-index: 10; padding: 40px 20px 80px; text-align: center;">
+    <p class="extra-grid-title" style="margin-bottom:20px;">Kuch Pyaare Se Pal 🎥</p>
+
+    <div class="video-slider" style="position: relative; max-width: 800px; margin: 0 auto;">
+      <!-- Prev Button -->
+      <button onclick="changeVideo(-1)"
+        style="position: absolute; left: -20px; top: 50%; transform: translateY(-50%); z-index: 20; background: var(--glass); border: 1px solid rgba(255,207,119,0.3); color: var(--gold); font-size: 2rem; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.5); transition: all 0.3s; padding-bottom:4px;">&#8249;</button>
+
+      <!-- Next Button -->
+      <button onclick="changeVideo(1)"
+        style="position: absolute; right: -20px; top: 50%; transform: translateY(-50%); z-index: 20; background: var(--glass); border: 1px solid rgba(255,207,119,0.3); color: var(--gold); font-size: 2rem; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.5); transition: all 0.3s; padding-bottom:4px;">&#8250;</button>
+
+      <div class="video-container"
+        style="background: var(--glass); border: 1px solid rgba(255,207,119,0.2); border-radius: 24px; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255,207,119,0.1); backdrop-filter: blur(16px); position: relative; overflow: hidden;">
+
+        <!-- Video Element -->
+        <video id="slider-video" controls loop playsinline preload="metadata" controlsList="nodownload"
+          style="width: 100%; border-radius: 12px; display: block; background: #000; transition: opacity 0.3s;">
+          <source id="slider-src" src="banaras/banaras_video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+
+        <!-- Video Counter Indicator -->
+        <div id="video-counter"
+          style="position: absolute; top: 24px; right: 24px; background: rgba(0,0,0,0.6); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; letter-spacing: 1px; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2);">
+          1 / 2</div>
+      </div>
+    </div>
+
+    <script>
+      const videos = [
+        "banaras/banaras_video.mp4",
+        "banaras/banaras_video2.mp4",
+        "banaras/banaras_video3.mp4",
+        "banaras/banaras_video4.mp4",
+        "banaras/banaras_video5.mp4"
+      ];
+      let currentVidIndex = 0;
+      let isChangingVideo = false;
+      const vidEl = document.getElementById('slider-video');
+      const srcEl = document.getElementById('slider-src');
+      const counterEl = document.getElementById('video-counter');
+
+      function changeVideo(dir) {
+        currentVidIndex += dir;
+        if (currentVidIndex < 0) currentVidIndex = videos.length - 1;
+        if (currentVidIndex >= videos.length) currentVidIndex = 0;
+
+        isChangingVideo = true;
+        vidEl.style.opacity = 0;
+        setTimeout(() => {
+          srcEl.src = videos[currentVidIndex];
+          vidEl.load();
+          vidEl.play().then(() => {
+            isChangingVideo = false;
+          }).catch(e => {
+            isChangingVideo = false;
+            console.log('Autoplay blocked', e);
+          });
+          counterEl.innerText = (currentVidIndex + 1) + " / " + videos.length;
+          vidEl.style.opacity = 1;
+        }, 300);
+      }
+
+      /* --- VIDEO DUCKING LOGIC --- */
+      function fadeBgMusic(target) {
+        if (!bgMusic) return;
+        const step = 0.02;
+        clearInterval(window.bgFadeInterval);
+        window.bgFadeInterval = setInterval(() => {
+          let curr = bgMusic.volume;
+          if (Math.abs(curr - target) < step) {
+            bgMusic.volume = target;
+            clearInterval(window.bgFadeInterval);
+          } else {
+            bgMusic.volume = (curr < target ? Math.min(curr + step, 1) : Math.max(curr - step, 0));
+          }
+        }, 50);
+      }
+
+      vidEl.addEventListener('play', () => fadeBgMusic(0.05));
+      vidEl.addEventListener('pause', () => {
+        // Prevent volume reset when just switching videos
+        if (!isChangingVideo) fadeBgMusic(0.45);
+      });
+      vidEl.addEventListener('ended', () => {
+        if (!isChangingVideo) fadeBgMusic(0.45);
+      });
+
+      // Play video only when the section is actively visible on screen
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Reduce bg music when section is active
+            fadeBgMusic(0.12);
+            vidEl.play().catch(e => console.log("Waiting for user interaction to play video audio"));
+          } else {
+            // Restore bg music when section is scrolled away
+            fadeBgMusic(0.45);
+            vidEl.pause();
+          }
+        });
+      }, { threshold: 0.5 });
+
+      videoObserver.observe(document.querySelector('.video-container'));
+    </script>
+  </div>
+
+  <!-- ===================== EXTRA PHOTO GRID ===================== -->
+  <div class="extra-grid-section">
+    <p class="extra-grid-title">Aur Bhi Kuch Moments... 📷</p>
+    <div class="extra-grid" id="extra-grid">
+      <div class="extra-thumb" data-src="banaras/b6.jpg"><img src="banaras/b6.jpg" alt="Banaras 6" loading="lazy" />
+      </div>
+      <div class="extra-thumb" data-src="banaras/b7.jpg"><img src="banaras/b7.jpg" alt="Banaras 7" loading="lazy" />
+      </div>
+      <div class="extra-thumb" data-src="banaras/b8.jpg"><img src="banaras/b8.jpg" alt="Banaras 8" loading="lazy" />
+      </div>
+      <div class="extra-thumb" data-src="banaras/b9.jpg"><img src="banaras/b9.jpg" alt="Banaras 9" loading="lazy" />
+      </div>
+      <div class="extra-thumb" data-src="banaras/b10.jpg"><img src="banaras/b10.jpg" alt="Banaras 10" loading="lazy" />
+      </div>
+      <div class="extra-thumb" data-src="banaras/b11.jpg"><img src="banaras/b11.jpg" alt="Banaras 11" loading="lazy" />
+      </div>
+      <div class="extra-thumb" data-src="banaras/b12.jpg"><img src="banaras/b12.jpg" alt="Banaras 12" loading="lazy" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== BOTTOM NOTE ===================== -->
+  <div class="bottom-note">
+    <p class="note-text">
+      "Banaras ne sirf ibadat nahi sikhaya — usne humein <em>ek doosre ko</em> aur kareeb laaya. 💕"
+    </p>
+  </div>
+
+  <script>
+    /* ======================== PARTICLES ======================== */
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, hearts = [];
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize(); window.addEventListener('resize', () => { resize(); buildThread(); });
+    function Heart(x, y, size, speed, opacity, color) { this.x = x; this.y = y; this.size = size; this.speed = speed; this.opacity = opacity; this.color = color; this.angle = 0; }
+    Heart.prototype.update = function () { this.y -= this.speed; this.x += Math.sin(this.angle) * 0.5; this.angle += 0.02; this.opacity -= 0.003; return (this.y > -50 && this.opacity > 0); };
+    Heart.prototype.draw = function () { ctx.save(); ctx.globalAlpha = Math.max(0, this.opacity); ctx.fillStyle = this.color; ctx.translate(this.x, this.y); ctx.scale(this.size / 30, this.size / 30); ctx.beginPath(); ctx.moveTo(0, -5); ctx.bezierCurveTo(-3, -10, -12, -10, -12, -2); ctx.bezierCurveTo(-12, 5, 0, 12, 0, 15); ctx.bezierCurveTo(0, 12, 12, 5, 12, -2); ctx.bezierCurveTo(12, -10, 3, -10, 0, -5); ctx.closePath(); ctx.fill(); ctx.restore(); };
+    const colors = ['#ffcf77', '#ff6f8a', '#ff3b5c', '#c084fc', '#fb7185', '#f9a8d4'];
+    let lastSpawn = 0;
+    function animateParticles(ts) { ctx.clearRect(0, 0, W, H); if (ts - lastSpawn > 500) { hearts.push(new Heart(Math.random() * W, H + 20, Math.random() * 14 + 6, Math.random() * 0.5 + 0.25, Math.random() * 0.45 + 0.2, colors[Math.floor(Math.random() * colors.length)])); lastSpawn = ts; } hearts = hearts.filter(h => { h.draw(); return h.update(); }); requestAnimationFrame(animateParticles); }
+    requestAnimationFrame(animateParticles);
+
+    /* ======================== PROGRESS BAR ======================== */
+    const pb = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => { const s = document.documentElement.scrollHeight - window.innerHeight; pb.style.width = (window.scrollY / s * 100) + '%'; }, { passive: true });
+
+    /* ======================== SCROLL REVEAL (ENHANCED) ======================== */
+    const ioReveal = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    // Target the PARENTS for coordinated reveal
+    document.querySelectorAll('.photo-node, .extra-thumb').forEach(el => ioReveal.observe(el));
+
+    /* ======================== THREAD ======================== */
+    function buildThread() {
+      const gal = document.getElementById('thread-gallery');
+      const svg = document.getElementById('b-thread-svg');
+      const path = document.getElementById('b-thread-path');
+      if (!gal || !svg || !path) return;
+      const galRect = gal.getBoundingClientRect();
+      const scrollTop = window.scrollY;
+      const galTop = galRect.top + scrollTop;
+      const galH = gal.offsetHeight;
+      const galW = gal.offsetWidth;
+      svg.setAttribute('viewBox', `0 0 ${galW} ${galH}`);
+      const nodes = gal.querySelectorAll('.photo-node');
+      if (!nodes.length) return;
+      const pts = [];
+      nodes.forEach(node => {
+        const r = node.getBoundingClientRect();
+        const nTop = r.top + scrollTop - galTop;
+        const nMid = nTop + r.height / 2;
+        const isLeft = node.classList.contains('ph-left');
+        pts.push({ x: isLeft ? (galW * 0.28) : (galW * 0.72), y: nMid });
+      });
+      if (pts.length < 2) return;
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for (let i = 1; i < pts.length; i++) { const p = pts[i - 1], c = pts[i], m = (p.y + c.y) / 2; d += ` C ${p.x} ${m}, ${c.x} ${m}, ${c.x} ${c.y}`; }
+      path.setAttribute('d', d);
+      const len = path.getTotalLength ? path.getTotalLength() : 6000;
+      path.style.strokeDasharray = len;
+      path.style.strokeDashoffset = len;
+      path._len = len;
+    }
+    function updateThread() {
+      const path = document.getElementById('b-thread-path');
+      const gal = document.getElementById('thread-gallery');
+      if (!path || !gal) return;
+      const r = gal.getBoundingClientRect();
+      const prog = Math.min(1, Math.max(0, -r.top / (gal.offsetHeight - window.innerHeight * 0.5)));
+      path.style.strokeDashoffset = (path._len || 6000) * (1 - prog);
+    }
+    window.addEventListener('scroll', updateThread, { passive: true });
+    window.addEventListener('load', buildThread);
+    document.addEventListener('DOMContentLoaded', buildThread);
+    setTimeout(buildThread, 300);
+
+    /* ======================== LIGHTBOX ======================== */
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const thumbs = [...document.querySelectorAll('.extra-thumb')];
+    let current = 0;
+    function openLB(idx) { current = idx; lbImg.src = thumbs[idx].dataset.src; lb.classList.add('open'); }
+    function closeLB() { lb.classList.remove('open'); lbImg.src = ''; }
+    thumbs.forEach((t, i) => t.addEventListener('click', () => openLB(i)));
+    document.getElementById('lb-close').addEventListener('click', closeLB);
+    document.getElementById('lb-prev').addEventListener('click', () => { current = (current - 1 + thumbs.length) % thumbs.length; lbImg.src = thumbs[current].dataset.src; });
+    document.getElementById('lb-next').addEventListener('click', () => { current = (current + 1) % thumbs.length; lbImg.src = thumbs[current].dataset.src; });
+    lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+    document.addEventListener('keydown', e => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') closeLB(); if (e.key === 'ArrowLeft') { current = (current - 1 + thumbs.length) % thumbs.length; lbImg.src = thumbs[current].dataset.src; } if (e.key === 'ArrowRight') { current = (current + 1) % thumbs.length; lbImg.src = thumbs[current].dataset.src; } });
+  </script>
+
+  <!-- BG MUSIC -->
+  <audio id="bg-music" loop preload="auto" controlsList="nodownload">
+    <source src="audio/banaras_bg_final.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    /* ======================== BG MUSIC ======================== */
+    const bgMusic = document.getElementById('bg-music');
+    let musicStarted = false;
+
+    // --- NEW: State Persistence Logic ---
+    const SCROLL_KEY = 'banaras_scroll_pos';
+    const AUDIO_KEY = 'banaras_audio_pos';
+
+    function saveState() {
+      localStorage.setItem(SCROLL_KEY, window.scrollY);
+    }
+
+    function restoreState() {
+      // 1. Restore Scroll
+      const savedScroll = localStorage.getItem(SCROLL_KEY);
+      if (savedScroll !== null) {
+        window.scrollTo(0, parseInt(savedScroll));
+      }
+
+
+    }
+
+    // Save state on scroll (throttled) and before leaving
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(saveState, 500);
+    }, { passive: true });
+
+    window.addEventListener('beforeunload', saveState);
+    window.addEventListener('pagehide', saveState);
+
+
+
+    function startMusic() {
+      if (musicStarted) return;
+      restoreState();
+      musicStarted = true;
+      bgMusic.volume = 0.45;
+      bgMusic.play().catch(e => {
+        musicStarted = false;
+        console.warn("Autoplay blocked. Click to play.");
+      });
+    }
+
+    // Attempt autoplay immediately on load
+    window.addEventListener('load', () => {
+      restoreState();
+      startMusic();
+    });
+
+    // Seamless triggers as soon as there is ANY activity
+    const triggers = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
+    triggers.forEach(t => {
+      window.addEventListener(t, startMusic, { once: true, passive: true });
+    });
+  </script>
+</body>
+
+</html>

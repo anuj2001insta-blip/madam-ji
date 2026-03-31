@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Letter For You 💌</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&family=Dancing+Script:wght@600&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --rose: #ff3b5c;
+      --rose-light: #ff6f8a;
+      --gold: #ffcf77;
+      --purple: #8b5cf6;
+      --deep: #0d0010;
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #fff5f7;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cosmos {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
+    }
+
+    /* ---- BACK BUTTON ---- */
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border-radius: 50px;
+      padding: 10px 20px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+
+    .back-btn:hover {
+      background: rgba(139, 92, 246, 0.2);
+      border-color: var(--purple);
+      transform: translateX(-3px);
+    }
+
+    /* ---- ENVELOPE CONTAINER ---- */
+    .envelope-wrapper {
+      position: relative;
+      z-index: 10;
+      width: clamp(280px, 80vw, 400px);
+      height: 250px;
+      perspective: 1000px;
+      cursor: pointer;
+      margin-top: 50px;
+    }
+
+    .instruction {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--rose-light);
+      animation: pulse-text 2s infinite;
+      width: 100%;
+      text-align: center;
+    }
+
+    @keyframes pulse-text {
+
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.05);
+      }
+    }
+
+    /* The Envelope body */
+    .envelope {
+      position: absolute;
+      inset: 0;
+      background: #c32442;
+      border-radius: 8px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.6s ease;
+      transform-style: preserve-3d;
+    }
+
+    /* Front panels to make it look like an envelope */
+    .front-left,
+    .front-right,
+    .front-bottom {
+      position: absolute;
+      z-index: 3;
+      border-style: solid;
+      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2));
+    }
+
+    .front-left {
+      left: 0;
+      top: 0;
+      border-width: 125px 0 125px 200px;
+      /* half height, half width */
+      border-color: transparent transparent transparent #d12b4b;
+    }
+
+    .front-right {
+      right: 0;
+      top: 0;
+      border-width: 125px 200px 125px 0;
+      border-color: transparent #e53255 transparent transparent;
+    }
+
+    .front-bottom {
+      bottom: 0;
+      left: 0;
+      border-width: 0 200px 140px 200px;
+      border-color: transparent transparent #fb3b61 transparent;
+    }
+
+    /* Flap */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 4;
+      border-style: solid;
+      border-width: 130px 200px 0 200px;
+      border-color: #a31c34 transparent transparent transparent;
+      transform-origin: top;
+      transition: transform 0.6s 0.2s, z-index 0.1s 0.2s;
+    }
+
+    /* Wax Seal */
+    .wax-seal {
+      position: absolute;
+      top: 120px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      color: #5c4305;
+    }
+
+    .wax-seal::after {
+      content: '❤';
+      font-size: 1.2rem;
+    }
+
+    /* Open State */
+    .envelope-wrapper.is-open .envelope {
+      transform: translateY(100px);
+    }
+
+    .envelope-wrapper.is-open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.is-open .wax-seal {
+      opacity: 0;
+    }
+
+    .envelope-wrapper.is-open .letter {
+      transform: translateY(-60px) translateZ(10px);
+      z-index: 2;
+      opacity: 1;
+      pointer-events: auto;
+      background: rgba(255, 250, 250, 0.98);
+    }
+
+    .envelope-wrapper.is-open .instruction {
+      opacity: 0;
+      animation: none;
+    }
+
+    /* ---- LETTER CARD ---- */
+    .letter {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(255, 250, 250, 0.95);
+      border-radius: 8px;
+      padding: 30px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      color: #333;
+      z-index: 1;
+      transform: translateY(0);
+      transition: transform 0.8s 0.6s, opacity 0.3s 0.6s;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .letter h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #a31c34;
+      margin-bottom: 16px;
+    }
+
+    .letter p {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #444;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .signature {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      color: #c32442;
+      align-self: flex-end;
+      margin-bottom: 24px;
+    }
+
+    /* ---- VOICE NOTE BUTTON ---- */
+    .voice-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #ff3b5c, #8b5cf6);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 24px;
+      color: white;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+      transition: all 0.3s;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .voice-btn:hover {
+      background: linear-gradient(135deg, #ff6f8a, #a77bf3);
+      transform: translateY(-2px);
+    }
+
+    .voice-btn .v-icon {
+      font-size: 1.2rem;
+    }
+
+    .audio-waves {
+      display: none;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+    }
+
+    .audio-waves.playing {
+      display: flex;
+    }
+
+    .wave {
+      width: 3px;
+      background: white;
+      border-radius: 3px;
+      animation: bounce-wave 1s infinite;
+    }
+
+    .wave:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .wave:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce-wave {
+
+      0%,
+      100% {
+        height: 4px;
+      }
+
+      50% {
+        height: 16px;
+      }
+    }
+
+    /* ---- DOWNLOAD BUTTON ---- */
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--rose);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 2px dashed rgba(255, 59, 92, 0.4);
+      transition: all 0.3s;
+    }
+
+    .download-btn:hover {
+      color: var(--purple);
+      border-color: var(--purple);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+
+      .front-left,
+      .front-right {
+        border-width: 125px 0 125px 40vw;
+      }
+
+      .front-bottom {
+        border-width: 0 40vw 140px 40vw;
+      }
+
+      .flap {
+        border-width: 130px 40vw 0 40vw;
+      }
+
+      .letter {
+        padding: 24px 16px;
+      }
+
+      .envelope-wrapper.is-open .letter {
+        transform: translateY(-80px) translateZ(10px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cosmos"></div>
+  <a href="index.html" class="back-btn"><span class="arrow">←</span><span>Back</span></a>
+
+  <div class="envelope-wrapper" id="envelope-wrapper">
+    <div class="instruction">Tap to Open My Letter...</div>
+    <div class="envelope">
+      <div class="flap"></div>
+      <div class="front-left"></div>
+      <div class="front-right"></div>
+      <div class="front-bottom"></div>
+      <div class="wax-seal"></div>
+
+      <div class="letter">
+        <h1>My madam jiii ❤️✨,</h1>
+        <p>I could write a thousand pages and still not have enough words to explain how much you mean to me. You are my
+          greatest blessing, my happiest thought, and my favorite reason to smile.</p>
+        <p>Click the button below to listen to what I really want to say right now...</p>
+        <span class="signature">Only Yours, Always</span>
+
+        <button class="voice-btn" id="voice-btn">
+          <span class="v-icon">🎙️</span>
+          <span class="v-text">Play My Voice Note</span>
+          <div class="audio-waves">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+          </div>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <audio id="vn-audio" src="audio/voice-note.m4a" preload="none" controlsList="nodownload"></audio>
+  <audio id="bg-music" loop preload="auto" controlsList="nodownload">
+    <source src="audio/audiomass-output (7).mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const envWrap = document.getElementById('envelope-wrapper');
+    const voiceBtn = document.getElementById('voice-btn');
+    const vnAudio = document.getElementById('vn-audio');
+    const audioWaves = document.querySelector('.audio-waves');
+    const vText = document.querySelector('.v-text');
+    let isPlaying = false;
+
+    envWrap.addEventListener('click', (e) => {
+      // Only trigger open if clicking the envelope, not the letter inner buttons
+      if (e.target.closest('.letter')) return;
+      envWrap.classList.add('is-open');
+    });
+
+    voiceBtn.addEventListener('click', () => {
+      // If background music from other page is playing, we can't stop it from here directly if it's a separate page, 
+      // but the user will be on this new page so index.html music won't be playing anyway!
+
+      if (isPlaying) {
+        vnAudio.pause();
+        isPlaying = false;
+        vText.innerText = "Resume Voice Note";
+        audioWaves.classList.remove('playing');
+        // Fade bg music back in
+        fadeBgMusic(0.3);
+      } else {
+        vnAudio.play().catch(e => console.error("Audio block:", e));
+        isPlaying = true;
+        vText.innerText = "Listening...";
+        audioWaves.classList.add('playing');
+        // Lower bg music for voice note
+        fadeBgMusic(0.03);
+      }
+    });
+
+    /* --- BG MUSIC LOGIC --- */
+    const bgMusic = document.getElementById('bg-music');
+    let bgStarted = false;
+
+    // --- NEW: State Persistence Logic ---
+    const SCROLL_KEY = 'letter_scroll_pos';
+    const AUDIO_KEY = 'letter_audio_pos';
+
+    function saveState() {
+      localStorage.setItem(SCROLL_KEY, window.scrollY);
+    }
+
+    function restoreState() {
+      // 1. Restore Scroll
+      const savedScroll = localStorage.getItem(SCROLL_KEY);
+      if (savedScroll !== null) {
+        window.scrollTo(0, parseInt(savedScroll));
+      }
+    }
+
+    // Save state on scroll (throttled) and before leaving
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(saveState, 500);
+    }, { passive: true });
+
+    window.addEventListener('beforeunload', saveState);
+    window.addEventListener('pagehide', saveState);
+
+
+
+    function startBgMusic() {
+      if (bgStarted) return;
+      restoreState();
+      bgStarted = true;
+      bgMusic.volume = 0.3; // Immediate target volume, no initial fade
+      bgMusic.setAttribute('controlsList', 'nodownload');
+      bgMusic.play().catch(e => {
+        bgStarted = false;
+        console.warn("Autoplay blocked");
+      });
+    }
+
+    function fadeBgMusic(target) {
+      const step = 0.02;
+      const interval = setInterval(() => {
+        if (Math.abs(bgMusic.volume - target) < step) {
+          bgMusic.volume = target;
+          clearInterval(interval);
+        } else {
+          bgMusic.volume += (bgMusic.volume < target ? step : -step);
+        }
+      }, 50);
+    }
+
+    window.addEventListener('load', () => {
+      restoreState();
+      startBgMusic();
+    });
+
+    const lTriggers = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
+    lTriggers.forEach(lt => {
+      window.addEventListener(lt, startBgMusic, { once: true, passive: true });
+    });
+
+    vnAudio.addEventListener('ended', () => {
+      isPlaying = false;
+      vText.innerText = "Play Again";
+      audioWaves.classList.remove('playing');
+    });
+  </script>
+</body>
+
+</html>
